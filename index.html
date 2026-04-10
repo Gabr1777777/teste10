@@ -1043,7 +1043,7 @@ html, body, * {
       </div>
 
       <div class="slide right">
-        <img src="https://xatimg.com/image/K6IVS49hl2wQ.jpg">
+        <img src="https://xatimg.com/image/ejlI39l40m5u.jpg">
       </div>
       
       <div class="slide">
@@ -1051,7 +1051,7 @@ html, body, * {
       </div>
 
       <div class="slide">
-        <img src="https://xatimg.com/image/K6IVS49hl2wQ.jpg">
+        <img src="https://xatimg.com/image/ejlI39l40m5u.jpg">
       </div>
 
       <div class="slide">
@@ -1059,11 +1059,11 @@ html, body, * {
       </div>
 
       <div class="slide">
-        <img src="https://xatimg.com/image/K6IVS49hl2wQ.jpg">
+        <img src="https://xatimg.com/image/ejlI39l40m5u.jpg">
       </div>
 
       <div class="slide">
-        <img src="https://xatimg.com/image/K6IVS49hl2wQ.jpg">
+        <img src="https://xatimg.com/image/ejlI39l40m5u.jpg">
       </div>
 
 
@@ -1111,12 +1111,7 @@ document.querySelector(".gold-btn").onclick = () => {
 };
 
 
-const texto=`Se que extrañas a esa persona que sacaste de tu via
-o que incluso ella te saco a ti.
-para recuerdo que esa persona ya no es a quien amaste/quisiste alguna vez.
-Esa persona cambio, tal vez para bien o para mal, por lo que fu funcion en
-esta vida termino ya ah culminado, dejala ir, agradece el aprendizaje y por mas doloroso
-que sea acepta el final.`;
+const texto=`Sei que você sente falta daquela pessoa que você tirou do seu caminho ou que mesmo ela te tirou. Para lembrar que essa pessoa já não é quem você amou/quis algum dia. Essa pessoa mudou, talvez para melhor ou para pior, por isso a função dela nesta vida já terminou, já chegou ao fim, deixe-a ir, agradeça pelo aprendizado e por mais doloroso que seja, aceite o fim.`;
 let i=0;
 const typing=document.getElementById("typing");
 (function escribir(){
@@ -1144,11 +1139,13 @@ modal.addEventListener("click", e=>{
   if(e.target === modal) closeModal();
 });
 
-const songs = [
-  { src: "music/Ariana Grande - we can't be friends.mp3", artist: "Ariana Grande", title: "we can't be friends" },
-  { src: "music/Billie Eilish - BIRDS OF A FEATHER.mp3", artist: "Billie Eilish", title: "BIRDS OF A FEATHER" },
-  { src: "music/The Weeknd - Save Your Tears.mp3", artist: "The Weeknd", title: "Save Your Tears" }
-];
+  const playlist = [
+            { name: "Abraham-Mateo - BAI LALA", url: "https://www.dropbox.com/scl/fi/gw8940zfvm60ul7malxox/Abraham-Mateo-BAI-LALA.mp3?rlkey=puytwnkxllb6tmz35htfr8tmh&st=ud55ktgf&raw=1" },
+            { name: "Alex Warren - Ordinary", url: "https://www.dropbox.com/scl/fi/lpcx92wv63wzcm6z56l7q/Alex-Warren-Ordinary.mp3?rlkey=pdxjo778t66ecrja08pfyij6k&st=zb53k17t&raw=1" },          
+            { name: "Eminem - You dont know", url: "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=wy1w0icm&raw=1" },
+            { name: "The Sound of Silence – Rising to the Night", url: "https://www.dropbox.com/scl/fi/2y9zhx5zjsdxg3zljc2f9/sound-of-silence.mp3.mp3?rlkey=88zg0td3loy40uxmcm9rnk1jt&st=qty8093e&raw=1" },
+            { name: "Desireless - Voyage Voyage", url: "https://www.dropbox.com/scl/fi/cqqhzkv1ll1p09z7qgylp/Desireless-voyage-voyage.mp3.mp3?rlkey=hscvkehw7n7vvgi2im4rwhom7&st=2ldonj76&raw=1" }
+        ];
 
 let current = 0;
 let isPlaying = false;
