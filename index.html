@@ -11,6 +11,8 @@ body{
   font-family:'Poppins',sans-serif;
   background:#5b3a73; 
   overflow:hidden;
+  user-select: none; /* Trava de seleção CSS */
+  -webkit-user-select: none;
 }
 
 .app {
@@ -261,6 +263,27 @@ body{
 .nav.prev { left: 10px; }
 .nav.next { right: 10px; }
 
+/* ===== ALERTA SEGURANÇA ===== */
+#security-alert {
+  position: fixed;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(209, 131, 224, 0.4);
+  backdrop-filter: blur(15px);
+  color: #fff;
+  padding: 12px 30px;
+  border-radius: 15px;
+  border: 1px solid rgba(255,255,255,0.4);
+  font-size: 13px;
+  font-weight: 600;
+  transition: bottom 0.5s ease;
+  z-index: 100001;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+
+#security-alert.show { bottom: 20px; }
+
 /* ===== INTRO & CURSOR ===== */
 #intro { position: fixed; inset: 0; background: #3b1c49; display: flex; justify-content: center; align-items: center; z-index: 99999; transition: 1s; }
 .gold-btn { padding: 15px 40px; border-radius: 30px; background: #784192; color: #fff; border: 2px solid #a737d4; cursor: pointer; letter-spacing: 2px; }
@@ -291,6 +314,7 @@ html, body, * { cursor: none !important; }
 <body>
 
 <div class="cursor-dot"></div>
+<div id="security-alert">Copyright - Acesso Proibido</div>
 
 <div id="intro">
   <button class="gold-btn">ENTRAR</button>
@@ -389,6 +413,24 @@ html, body, * { cursor: none !important; }
 </div>
 
 <script>
+// TRAVAS DE SEGURANÇA E ALERTA
+function showAlert() {
+  const alert = document.getElementById('security-alert');
+  alert.classList.add('show');
+  setTimeout(() => alert.classList.remove('show'), 2000);
+}
+
+document.oncontextmenu = (e) => { e.preventDefault(); showAlert(); };
+document.onkeydown = (e) => {
+  if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) {
+    e.preventDefault();
+    showAlert();
+    return false;
+  }
+};
+document.onselectstart = (e) => { e.preventDefault(); };
+
+// RESTANTE DO CÓDIGO (PLAYER E EFEITOS)
 const songs = [
   { artist: "Abraham Mateo", title: "BAI LALA", src: "https://www.dropbox.com/scl/fi/gw8940zfvm60ul7malxox/Abraham-Mateo-BAI-LALA.mp3?rlkey=puytwnkxllb6tmz35htfr8tmh&st=ud55ktgf&raw=1" },
   { artist: "Alex Warren", title: "Ordinary", src: "https://www.dropbox.com/scl/fi/lpcx92wv63wzcm6z56l7q/Alex-Warren-Ordinary.mp3?rlkey=pdxjo778t66ecrja08pfyij6k&st=zb53k17t&raw=1" },          
@@ -491,7 +533,6 @@ function updateGallery() {
 function next() { currentSlide = (currentSlide + 1) % slides.length; updateGallery(); }
 function prev() { currentSlide = (currentSlide - 1 + slides.length) % slides.length; updateGallery(); }
 
-// CURSOR SIMPLES (SOMENTE BOLINHA)
 const dot = document.querySelector(".cursor-dot");
 document.onmousemove = (e) => {
   dot.style.left = e.clientX + "px"; 
@@ -523,9 +564,6 @@ function draw() {
   requestAnimationFrame(draw);
 }
 draw();
-
-document.oncontextmenu = (e) => e.preventDefault();
-document.onselectstart = (e) => e.preventDefault();
 </script>
 </body>
 </html>
