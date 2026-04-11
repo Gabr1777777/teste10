@@ -51,9 +51,7 @@ body{
   height: 440px;
   position: relative;
   border: 2px solid rgba(243, 176, 240, 0.35);
-  box-shadow:
-    0 0 18px rgba(255,255,255,0.15),
-    inset 0 0 12px rgba(255,255,255,0.08);
+  box-shadow: 0 0 18px rgba(255,255,255,0.15), inset 0 0 12px rgba(255,255,255,0.08);
 }
 
 /* SIDEBAR */
@@ -87,6 +85,8 @@ body{
   border: 6px solid rgba(237, 187, 250, 0.5);
 }
 
+.menu { width: 100%; flex: 1; position: relative; padding-bottom: 70px; }
+
 .menu-buttons {
   margin-left: 20px;
   width: 80%;
@@ -113,7 +113,7 @@ body{
 
 .menu-btn.active { transform: scale(1.07); }
 
-/* CONTENIDO */
+/* CONTENT */
 .content {
   flex: 1;
   background: rgba(0,0,0,.35);
@@ -122,73 +122,21 @@ body{
   overflow: hidden;
 }
 
-.section {
-  width: 100%;
-  height: 100%;
-  display: none;
-  animation: fadeIn .6s ease;
-}
-
+.section { width: 100%; height: 100%; display: none; animation: fadeIn .6s ease; }
 .section.active { display: block; }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* INICIO */
-.inicio-wrapper {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 60px;
-}
-
+.inicio-wrapper { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; padding-top: 60px; }
 .inicio-title {
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  text-align: center;
+  font-size: 16px; font-weight: 500; letter-spacing: 1px; text-align: center;
   background: linear-gradient(90deg,#ffd6e8,#e0c3ff,#dfc3ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 6px rgba(255,200,220,.6), 0 0 14px rgba(209, 180, 255, 0.4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 6px rgba(255,200,220,.6);
 }
-
 .firma { margin-top: 30px; }
 .firma img { max-width: 350px; opacity: .9; }
-
-/* INTRO */
-#intro {
-  position: fixed;
-  inset: 0;
-  background: rgba(59, 28, 73, 0.92);
-  backdrop-filter: blur(6px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 99999;
-  transition: opacity 1s ease;
-}
-
-.gold-btn {
-  padding: 14px 38px;
-  border-radius: 999px;
-  cursor: pointer;
-  border: 2px solid #a737d4;
-  background: radial-gradient(circle at top, #784192, #6e397e);
-  box-shadow: 0 0 18px rgba(154, 55, 212, 0.45);
-  animation: glowPulse 2.5s infinite ease-in-out;
-}
-
-.gold-btn .text { letter-spacing: 3px; font-weight: 600; color: #edc8fc; }
-
-@keyframes glowPulse {
-  0%,100% { box-shadow: 0 0 16px rgba(149, 55, 212, 0.45); }
-  50% { box-shadow: 0 0 30px rgba(154, 55, 212, 0.9); }
-}
 
 /* SOBRE MI */
 .sobremi-wrapper{ height:100%; display:flex; justify-content:center; align-items:flex-start; padding-top:50px; }
@@ -196,23 +144,31 @@ body{
 .sobremi-nombre{ font-size:24px; font-weight:600; background:linear-gradient(90deg,#ffd6e8,#e0c3ff,#c3f0ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 .sobremi-texto{ font-size:13px; line-height:1.6; color:#ffffffd8; white-space:pre-line; }
 
+/* AMIGOS & GALERIA */
+.amigos-container{ position: relative; top:60px; text-align: center; }
+.amigo-polaroid{ 
+  position: absolute; width: 48%; height: 150px; background: rgba(127, 63, 156, 0.45); 
+  border: 1.5px solid rgba(255,255,255,.35); border-radius: 12px; backdrop-filter: blur(6px);
+}
+.amigo-polaroid img{ width:100%; height:120px; object-fit:cover; border-radius:10px 10px 0 0; }
+
+.gallery-box{ position: relative; width: 100%; height: 85%; padding: 10px; top: 40px; }
+.slide{ position:absolute; width:180px; height:280px; border-radius:16px; overflow:hidden; transition:.6s ease; filter:brightness(.45); transform:scale(.75); }
+.slide.active{ transform:scale(1); filter:brightness(1); z-index:3; border: 2px solid #fff; }
+
 /* REPRODUCTOR */
 .reproductor {
   position: fixed; bottom: 35px; left: 30px; width: 100px; height: 42px;
   background: linear-gradient(145deg, #e0e0e0, #d6d6d6); border-radius: 25px;
   display: flex; align-items: center; justify-content: flex-end; padding: 5px 8px;
-  transition: all 0.5s ease; box-shadow: 0 4px 8px rgba(0,0,0,.2); overflow: hidden;
-  cursor: pointer; z-index: 9999;
+  transition: all 0.5s ease; box-shadow: 0 4px 8px rgba(0,0,0,.2); overflow: hidden; z-index: 9999;
 }
-
 .reproductor.expandido { width: 230px; }
 .song-info { opacity: 0; width: 100px; transition: all .5s ease; color: #000; font-size: 11px; }
 .reproductor.expandido .song-info { opacity: 1; }
-.volume-container { display: none; align-items: center; margin-right: 5px; }
-.reproductor.expandido .volume-container { display: flex; }
 #volumeRange { width: 40px; accent-color: #000; cursor: pointer; }
 
-/* CURSOR */
+/* CURSOR (APENAS A BOLINHA) */
 body { cursor: none; }
 .cursor-dot { 
   position: fixed; top: 0; left: 0; pointer-events: none; z-index: 100000; 
@@ -225,11 +181,12 @@ html, body, * { cursor: none !important; user-select: none !important; -webkit-u
 #security-alert {
   position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
   background: rgba(83, 27, 94, 0.9); border: 1px solid rgba(237, 187, 250, 0.5);
-  padding: 10px 25px; border-radius: 20px; color: #edc8fc; font-size: 13px;
-  z-index: 1000000; transition: transform 0.4s ease; pointer-events: none;
+  padding: 10px 25px; border-radius: 20px; color: #edc8fc; z-index: 1000000; transition: transform 0.4s ease;
 }
 #security-alert.show { transform: translateX(-50%) translateY(0); }
 
+#intro { position: fixed; inset: 0; background: rgba(59, 28, 73, 0.92); backdrop-filter: blur(6px); display: flex; justify-content: center; align-items: center; z-index: 99999; transition: opacity 1s ease; }
+.gold-btn { padding: 14px 38px; border-radius: 999px; cursor: pointer; border: 2px solid #a737d4; background: radial-gradient(circle at top, #784192, #6e397e); }
 #stars{ position:fixed; inset:0; width:100%; height:100%; z-index:-1; background:#5b3a73; }
 </style>
 </head>
@@ -238,7 +195,7 @@ html, body, * { cursor: none !important; user-select: none !important; -webkit-u
 <div class="cursor-dot"></div>
 
 <div id="intro">
-  <button class="gold-btn"><span class="text">ENTRAR</span></button>
+  <button class="gold-btn" onclick="entrar()"><span style="color:#edc8fc; letter-spacing:3px; font-weight:600;">ENTRAR</span></button>
 </div>
 <canvas id="stars"></canvas>
 <div id="security-alert">Copyright - Acesso Proibido</div>
@@ -249,22 +206,21 @@ html, body, * { cursor: none !important; user-select: none !important; -webkit-u
       <div class="container">
         <div class="sidebar">
           <div class="profile-pic"><img src="https://xatimg.com/image/H3nFl0QOK3f7.jpg"></div>
-          <div class="menu-buttons">
-            <div class="menu-btn active" onclick="showSection('inicio', this)">♡ Inicio ♡</div>
-            <div class="menu-btn" onclick="showSection('sobremi', this)">♡ Sobre mim ♡</div>
-            
-            <div class="reproductor" id="reproductor">
-              <div class="song-info">
-                <p id="artist" style="margin:0">---</p>
-                <p id="title" style="margin:0">---</p>
-              </div>
-              <div class="controles" style="display:flex; align-items:center; gap:5px">
-                <div class="volume-container">
+          <div class="menu">
+            <div class="menu-buttons">
+              <div class="menu-btn active" onclick="showSection('inicio', this)">♡ Inicio ♡</div>
+              <div class="menu-btn" onclick="showSection('sobremi', this)">♡ Sobre mim ♡</div>
+              <div class="menu-btn" onclick="showSection('amigos', this)">♡ Amigos ♡</div>
+              <div class="menu-btn" onclick="showSection('galeria', this)">♡ Galeria ♡</div>
+              
+              <div class="reproductor" id="reproductor">
+                <div class="song-info"><p id="artist" style="margin:0">Eminem</p></div>
+                <div style="display:flex; align-items:center; gap:5px">
                   <input type="range" id="volumeRange" min="0" max="1" step="0.1" value="1">
+                  <button id="playBtn" style="background:#000; color:#fff; border:none; border-radius:50%; width:28px; height:28px; cursor:pointer">▶</button>
                 </div>
-                <button id="playBtn" style="background:#000; color:#fff; border:none; border-radius:50%; width:28px; height:28px; cursor:pointer">▶</button>
+                <audio id="audio"></audio>
               </div>
-              <audio id="audio"></audio>
             </div>
           </div>
         </div>
@@ -276,13 +232,23 @@ html, body, * { cursor: none !important; user-select: none !important; -webkit-u
               <div class="firma"><img src="https://xatimg.com/image/ytKJxwb0uEco.gif"></div>
             </div>
           </div>
-
           <div class="section" id="sobremi">
             <div class="sobremi-wrapper">
               <div class="sobremi-content">
                 <div class="sobremi-nombre">Gabriel</div>
-                <div class="sobremi-texto">Sei que você sente falta daquela pessoa...</div>
+                <div class="sobremi-texto">Sei que você sente falta daquela pessoa que você tirou do seu caminho...</div>
               </div>
+            </div>
+          </div>
+          <div class="section" id="amigos">
+             <div class="amigos-container">
+                <div class="amigo-polaroid" style="top:20px; left:10px;"><img src="https://xatimg.com/image/PEq5yNtkJRP3.jpg"><p style="color:#fff; font-size:12px;">Amigo 1</p></div>
+                <div class="amigo-polaroid" style="top:10px; left:160px;"><img src="https://xatimg.com/image/H3nFl0QOK3f7.jpg"><p style="color:#fff; font-size:12px;">Amigo 2</p></div>
+             </div>
+          </div>
+          <div class="section" id="galeria">
+            <div class="gallery-box">
+               <div class="slide active" style="left:50%; transform:translateX(-50%);"><img src="https://xatimg.com/image/q3UtxK6jIr20.jpg" style="width:100%;"></div>
             </div>
           </div>
         </div>
@@ -292,14 +258,12 @@ html, body, * { cursor: none !important; user-select: none !important; -webkit-u
 </div>
 
 <script>
-// SEGURANÇA
 const alertBox = document.getElementById('security-alert');
 function triggerAlert() { alertBox.classList.add('show'); setTimeout(() => alertBox.classList.remove('show'), 2000); }
 document.addEventListener('contextmenu', e => { e.preventDefault(); triggerAlert(); });
 document.addEventListener('keydown', e => { if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) { e.preventDefault(); triggerAlert(); } });
 document.addEventListener('selectstart', e => { e.preventDefault(); triggerAlert(); });
 
-// NAVEGAÇÃO
 function showSection(id, el){
   document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
@@ -307,33 +271,28 @@ function showSection(id, el){
   el.classList.add("active");
 }
 
-document.querySelector(".gold-btn").onclick = () => {
+function entrar() {
   document.getElementById("intro").style.opacity = 0;
   setTimeout(() => {
     document.getElementById("intro").style.display = "none";
     document.querySelector(".app").classList.add("show");
     audio.play();
   }, 1000);
-};
+}
 
-// MUSICA
-const playlist = [{ name: "Eminem - You dont know", url: "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=wy1w0icm&raw=1" }];
 const audio = document.getElementById("audio");
+audio.src = "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=wy1w0icm&raw=1";
 const playBtn = document.getElementById("playBtn");
-const volumeRange = document.getElementById("volumeRange");
 const reproductor = document.getElementById("reproductor");
 
-audio.src = playlist[0].url;
 playBtn.onclick = (e) => { e.stopPropagation(); audio.paused ? audio.play() : audio.pause(); playBtn.textContent = audio.paused ? "▶" : "❚❚"; };
-volumeRange.oninput = (e) => { audio.volume = e.target.value; };
+document.getElementById("volumeRange").oninput = (e) => { audio.volume = e.target.value; };
 reproductor.onmouseenter = () => reproductor.classList.add("expandido");
 reproductor.onmouseleave = () => reproductor.classList.remove("expandido");
 
-// CURSOR
 const dot = document.querySelector(".cursor-dot");
 document.addEventListener("mousemove", e => { dot.style.left=e.clientX+"px"; dot.style.top=e.clientY+"px"; });
 
-// ESTRELAS
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
 let w, h;
