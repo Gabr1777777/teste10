@@ -9,7 +9,7 @@ body{
   margin:0;
   height:100vh;
   font-family:'Poppins',sans-serif;
-  background:#5b3a73; 
+  background:#5b3a73;
   overflow:hidden;
 }
 
@@ -54,6 +54,7 @@ body{
   box-shadow: 0 0 18px rgba(255,255,255,0.15), inset 0 0 12px rgba(255,255,255,0.08);
 }
 
+/* SIDEBAR */
 .sidebar {
   width: 35%;
   background-color: rgba(83, 27, 94, 0.753);
@@ -70,8 +71,7 @@ body{
   position: absolute;
   top: 12px;
   right: 0;
-  width: 2px;
-  height: 100%;
+  width: 2px; height: 100%;
   background: linear-gradient(transparent, rgba(255,255,255,0.6), transparent);
 }
 
@@ -89,47 +89,79 @@ body{
 
 .menu-btn {
   display: flex; align-items: center; justify-content: center; padding: 4px 2px; border-radius: 10px; cursor: pointer; font-weight: 600;
-  backdrop-filter: blur(12px) saturate(160%); background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(0,0,0,.35));
+  position: relative; overflow: hidden; backdrop-filter: blur(12px) saturate(160%);
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(0,0,0,.35));
   border: 1px solid rgba(255,255,255,.35); box-shadow: inset 0 0 12px rgba(255,255,255,.12), 0 0 14px rgba(255,255,255,.12);
-  transition: all .3s ease; animation: menuTextFlow 4s linear infinite;
-  background-image: linear-gradient(90deg, #ffd1dc, #e0c3ff, #c3f0ff, #ffd1dc); background-size: 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  animation: menuTextFlow 4s linear infinite; background-image: linear-gradient(90deg, #ffd1dc, #e0c3ff, #c3f0ff, #ffd1dc);
+  background-size: 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
 
 .menu-btn.active { transform: scale(1.07); }
 
+/* CONTENIDO */
 .content { flex: 1; background: rgba(0,0,0,.35); border-radius: 0 15px 15px 0; position: relative; overflow: hidden; }
 .section { width: 100%; height: 100%; display: none; animation: fadeIn .6s ease; }
 .section.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+/* TÍTULOS GLASS */
 .title-glass { display: flex; justify-content: center; align-items: center; padding: 6px 20px; margin: 20px auto; width: fit-content; background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.05)); backdrop-filter: blur(14px); border-radius: 18px; border: 1px solid rgba(255,255,255,.45); }
-.inicio-title, .amigos-title, .gallery-title { font-size: 14px; text-align: center; background: linear-gradient(90deg,#ffd6e8,#e0c3ff,#dfc3ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.inicio-title, .amigos-title, .gallery-title { text-align: center; background: linear-gradient(90deg,#ffd6e8,#e0c3ff,#dfc3ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: glowMove 4s linear infinite; }
 
+@keyframes menuTextFlow { from { background-position: 0%; } to { background-position: 300%; } }
+@keyframes glowMove { from { background-position: 0%; } to { background-position: 300%; } }
+
+/* SOBRE MI */
+.sobremi-wrapper{ height:100%; display:flex; justify-content:center; align-items:flex-start; padding-top:50px; }
+.sobremi-content{ text-align:center; max-width:420px; }
+.sobremi-nombre{ font-size:24px; font-weight:600; background:linear-gradient(90deg,#ffd6e8,#e0c3ff,#c3f0ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.sobremi-id{ font-size:12px; color:#ffffffb0; margin-top:4px; }
+.sobremi-pais{ display:flex; justify-content:center; margin-top:4px; gap:6px; font-size:12px; color:#fff; }
+.sobremi-pais img{ width:18px; height:12px; }
+.sobremi-linea{ width:60%; height:1px; margin:14px auto; background:linear-gradient(90deg,transparent,#fff,transparent); }
+.sobremi-texto{ font-size:13px; line-height:1.6; color:#ffffffd8; white-space:pre-line; }
+.cursor-typing { display:inline-block; width:2px; height:14px; background:#fff; margin-left:3px; animation:blink 1s infinite; }
+@keyframes blink{50%{opacity:0}}
+
+/* AMIGOS */
+.amigos-container{ position: relative; text-align: center; padding: 20px 10px; }
+.amigos-collage{ position: relative; width: 100%; height: 230px; margin-top: 30px; }
+.amigo-polaroid{ position: absolute; width: 48%; height: 150px; background: linear-gradient(145deg, rgba(127, 63, 156, 0.45), rgba(130, 92, 155, 0.45)); border: 1.5px solid rgba(255,255,255,.35); border-radius: 12px; backdrop-filter: blur(6px); cursor: pointer; transition: transform .3s ease; }
+.amigo-polaroid:hover{ transform: scale(1.08); }
+.amigo-polaroid img{ width:100%; height:120px; object-fit:cover; border-radius:10px 10px 0 0; }
+.amigo-polaroid p{ margin:4px 0 0; font-size:.75rem; color:#fff; }
+.polaroid-0{ top:0; left:10px; transform:rotate(-5deg); }
+.polaroid-1{ top:-8px; left:160px; transform:rotate(6deg); }
+
+/* GALERIA */
+.gallery-box{ position: relative; width: 100%; height: 85%; padding: 10px; top: -10px; }
+.slider{ position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+.slide{ position:absolute; width:180px; height:280px; border-radius:16px; overflow:hidden; transition:.6s ease; filter:brightness(.45); transform:scale(.75); box-shadow:0 10px 25px rgba(0,0,0,.35); }
+.slide.active{ transform:scale(1); filter:brightness(1); border: 2px solid #fff; z-index:3; }
+.slide.left{ opacity:.6; transform:translateX(-200px) scale(.8); }
+.slide.right{ opacity:.6; transform:translateX(200px) scale(.8); }
+.nav{ position:absolute; top:50%; transform:translateY(-50%); width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,.35); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:5; }
+.nav.prev{left:10px} .nav.next{right:10px}
+
+/* REPRODUCTOR */
 .reproductor { position: fixed; bottom: 35px; left: 30px; width: 100px; height: 42px; background: linear-gradient(145deg, #e0e0e0, #d6d6d6); border-radius: 25px; display: flex; align-items: center; justify-content: flex-end; padding: 5px 8px; transition: all 0.5s ease; box-shadow: 0 4px 8px rgba(0,0,0,.2); overflow: hidden; z-index: 9999; }
 .reproductor.expandido { width: 200px; }
 .song-info { opacity: 0; width: 100px; transition: all .5s ease; color: #000; font-size: 11px; }
 .reproductor.expandido .song-info { opacity: 1; }
+.btn-control { background: #000; color: #e2e2e2; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; }
 
-/* CURSOR APENAS BOLINHA */
+/* CURSOR SIMPLIFICADO */
 body { cursor: none; }
 .cursor-dot { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 100000; transform: translate(-50%, -50%); width: 8px; height: 8px; background: white; border-radius: 50%; box-shadow: 0 0 10px rgba(255, 255, 255, 0.8); }
 
 /* SEGURANÇA */
-html, body, * { cursor: none !important; user-select: none !important; }
+html, body, * { cursor: none !important; user-select: none !important; -webkit-user-select: none; }
 #security-alert { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(83, 27, 94, 0.9); border: 1px solid rgba(237, 187, 250, 0.5); padding: 10px 25px; border-radius: 20px; color: #edc8fc; z-index: 1000000; transition: transform 0.4s ease; }
 #security-alert.show { transform: translateX(-50%) translateY(0); }
 
-/* ESTILOS GALERIA E AMIGOS REATIVADOS */
-.amigos-collage{ position: relative; width: 100%; height: 230px; margin-top: 30px; }
-.amigo-polaroid{ position: absolute; width: 48%; height: 150px; background: rgba(127, 63, 156, 0.45); border: 1.5px solid rgba(255,255,255,.35); border-radius: 12px; backdrop-filter: blur(6px); }
-.amigo-polaroid img{ width:100%; height:120px; object-fit:cover; border-radius:10px 10px 0 0; }
-.gallery-box{ position: relative; width: 100%; height: 85%; top: 40px; }
-.slide{ position:absolute; width:180px; height:280px; border-radius:16px; overflow:hidden; transition:.6s ease; filter:brightness(.45); transform:scale(.75); }
-.slide.active{ transform:scale(1); filter:brightness(1); z-index:3; border: 2px solid #fff; }
-.slide.left{ transform:translateX(-200px) scale(.8); opacity:.6; }
-.slide.right{ transform:translateX(200px) scale(.8); opacity:.6; }
-#intro { position: fixed; inset: 0; background: rgba(59, 28, 73, 0.92); backdrop-filter: blur(6px); display: flex; justify-content: center; align-items: center; z-index: 99999; }
+#intro { position: fixed; inset: 0; background: rgba(59, 28, 73, 0.92); backdrop-filter: blur(6px); display: flex; justify-content: center; align-items: center; z-index: 99999; transition: opacity 1s ease; }
 .gold-btn { padding: 14px 38px; border-radius: 999px; cursor: pointer; border: 2px solid #a737d4; background: radial-gradient(circle at top, #784192, #6e397e); }
+.footer { position:absolute; bottom:30px; left:50%; transform:translateX(-50%); font-size:8px; color:#fdeef0aa; }
 </style>
 </head>
 
@@ -138,7 +170,7 @@ html, body, * { cursor: none !important; user-select: none !important; }
 <div id="security-alert">Copyright - Acesso Proibido</div>
 
 <div id="intro">
-  <button class="gold-btn"><span style="color:#edc8fc; letter-spacing:3px; font-weight:600;">ENTRAR</span></button>
+  <button class="gold-btn" id="entrarBtn"><span style="color:#edc8fc; letter-spacing:3px; font-weight:600;">ENTRAR</span></button>
 </div>
 <canvas id="stars" style="position:fixed; inset:0; z-index:-1;"></canvas>
 
@@ -154,9 +186,13 @@ html, body, * { cursor: none !important; user-select: none !important; }
               <div class="menu-btn" onclick="showSection('sobremi', this)">♡ Sobre mim ♡</div>
               <div class="menu-btn" onclick="showSection('amigos', this)">♡ Amigos ♡</div>
               <div class="menu-btn" onclick="showSection('galeria', this)">♡ Galeria ♡</div>
+              
               <div class="reproductor" id="reproductor">
-                <div class="song-info"><p id="artist" style="margin:0">---</p></div>
-                <button id="playBtn" style="background:#000; color:#fff; border:none; border-radius:50%; width:28px; height:28px; cursor:pointer">▶</button>
+                <div class="song-info"><p id="artist" style="margin:0">---</p><p id="title" style="margin:0">---</p></div>
+                <div class="controles" style="display:flex; gap:5px">
+                  <button class="btn-control" id="nextBtn">⏭</button>
+                  <button class="btn-control" id="playBtn">▶</button>
+                </div>
                 <audio id="audio"></audio>
               </div>
             </div>
@@ -167,43 +203,63 @@ html, body, * { cursor: none !important; user-select: none !important; }
           <div class="section active" id="inicio">
             <div class="inicio-wrapper">
               <div class="title-glass"><div class="inicio-title">Bem vindos ao meu Xatspace</div></div>
-              <div class="firma"><img src="https://xatimg.com/image/ytKJxwb0uEco.gif"></div>
+              <div class="firma" style="text-align:center; margin-top:30px;"><img src="https://xatimg.com/image/ytKJxwb0uEco.gif" style="max-width:350px;"></div>
             </div>
           </div>
+
           <div class="section" id="sobremi">
-            <div class="sobremi-wrapper"><div class="sobremi-content">
-              <div class="sobremi-nombre">Gabriel</div>
-              <div class="sobremi-texto"><span id="typing"></span></div>
-            </div></div>
+            <div class="sobremi-wrapper">
+              <div class="sobremi-content">
+                <div class="sobremi-nombre">Gabriel</div>
+                <div class="sobremi-id">ID: 1777777</div>
+                <div class="sobremi-pais"><span>País:</span><img src="https://flagcdn.com/w20/br.png"><span>Brasil</span></div>
+                <div class="sobremi-linea"></div>
+                <div class="sobremi-texto"><span id="typing"></span><span class="cursor-typing"></span></div>
+              </div>
+            </div>
           </div>
+
           <div class="section" id="amigos">
             <div class="title-glass"><div class="amigos-title">MEUS AMIGOS</div></div>
-            <div class="amigos-collage">
-              <div class="amigo-polaroid" style="left:10px;"><img src="https://xatimg.com/image/PEq5yNtkJRP3.jpg"><p>Name</p></div>
-              <div class="amigo-polaroid" style="left:160px;"><img src="https://xatimg.com/image/H3nFl0QOK3f7.jpg"><p>Name</p></div>
+            <div class="amigos-container">
+              <div class="amigos-collage">
+                <div class="amigo-polaroid polaroid-0"><img src="https://xatimg.com/image/PEq5yNtkJRP3.jpg"><p>Gold</p></div>
+                <div class="amigo-polaroid polaroid-1"><img src="https://xatimg.com/image/H3nFl0QOK3f7.jpg"><p>Mnna</p></div>
+              </div>
             </div>
           </div>
+
           <div class="section" id="galeria">
             <div class="title-glass"><div class="gallery-title">GALERIA</div></div>
             <div class="gallery-box">
-              <div class="slider" style="display:flex; justify-content:center; align-items:center; height:100%;">
+              <div class="slider">
                 <div class="slide active"><img src="https://xatimg.com/image/q3UtxK6jIr20.jpg" style="width:100%; height:100%; object-fit:cover;"></div>
+                <div class="slide right"><img src="https://xatimg.com/image/K6IVS49hl2wQ.jpg" style="width:100%; height:100%; object-fit:cover;"></div>
+                <div class="slide"><img src="https://xatimg.com/image/q3UtxK6jIr20.jpg" style="width:100%; height:100%; object-fit:cover;"></div>
               </div>
+              <div class="nav prev" onclick="prevSlide()">❮</div>
+              <div class="nav next" onclick="nextSlide()">❯</div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div class="footer">By: Gabr</div>
 </div>
 
 <script>
+// SEGURANÇA
 const alertBox = document.getElementById('security-alert');
 function triggerAlert() { alertBox.classList.add('show'); setTimeout(() => alertBox.classList.remove('show'), 2000); }
 document.addEventListener('contextmenu', e => { e.preventDefault(); triggerAlert(); });
-document.addEventListener('keydown', e => { if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) { e.preventDefault(); triggerAlert(); } });
-document.addEventListener('selectstart', e => { e.preventDefault(); triggerAlert(); });
+document.addEventListener('keydown', e => { 
+  if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) { e.preventDefault(); triggerAlert(); }
+  if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) { e.preventDefault(); triggerAlert(); }
+});
+document.addEventListener('selectstart', e => { e.preventDefault(); });
 
+// NAVEGAÇÃO
 function showSection(id,el){
   document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
@@ -211,23 +267,78 @@ function showSection(id,el){
   el.classList.add("active");
 }
 
-document.querySelector(".gold-btn").onclick = () => {
+document.getElementById("entrarBtn").onclick = () => {
   document.getElementById("intro").style.opacity = 0;
   setTimeout(() => {
     document.getElementById("intro").style.display = "none";
     document.querySelector(".app").classList.add("show");
-    audio.play();
+    loadSong(currentSong);
   }, 1000);
 };
 
-const audio = document.getElementById("audio");
-audio.src = "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=wy1w0icm&raw=1";
-const playBtn = document.getElementById("playBtn");
-playBtn.onclick = (e) => { e.stopPropagation(); audio.paused ? audio.play() : audio.pause(); playBtn.textContent = audio.paused ? "▶" : "❚❚"; };
+// TYPING
+const texto="Sei que você sente falta daquela pessoa que você tirou do seu caminho ou que mesmo ela te tirou. Para lembrar que essa pessoa já não é quem você amou/quis algum dia. Essa pessoa mudou, talvez para melhor ou para pior, por isso a função dela nesta vida já terminou, já chegou ao fim, deixe-a ir, agradeça pelo aprendizado e por mais doloroso que seja, aceite o fim.";
+let charIndex=0;
+function escribir(){
+  if(charIndex < texto.length){
+    document.getElementById("typing").textContent += texto.charAt(charIndex++);
+    setTimeout(escrever, 35);
+  }
+}
+escrever();
 
+// MUSICA
+const songs = [
+  { artist: "Eminem", title: "You dont know", url: "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=wy1w0icm&raw=1" },
+  { artist: "Desireless", title: "Voyage Voyage", url: "https://www.dropbox.com/scl/fi/cqqhzkv1ll1p09z7qgylp/Desireless-voyage-voyage.mp3.mp3?rlkey=hscvkehw7n7vvgi2im4rwhom7&st=2ldonj76&raw=1" }
+];
+let currentSong = 0;
+const audio = document.getElementById("audio");
+const playBtn = document.getElementById("playBtn");
+const reproductor = document.getElementById("reproductor");
+
+function loadSong(index) {
+  audio.src = songs[index].url;
+  document.getElementById("artist").textContent = songs[index].artist;
+  document.getElementById("title").textContent = songs[index].title;
+  audio.play();
+  playBtn.textContent = "❚❚";
+}
+
+playBtn.onclick = (e) => {
+  e.stopPropagation();
+  audio.paused ? audio.play() : audio.pause();
+  playBtn.textContent = audio.paused ? "▶" : "❚❚";
+};
+
+document.getElementById("nextBtn").onclick = (e) => {
+  e.stopPropagation();
+  currentSong = (currentSong + 1) % songs.length;
+  loadSong(currentSong);
+};
+
+reproductor.onmouseenter = () => reproductor.classList.add("expandido");
+reproductor.onmouseleave = () => reproductor.classList.remove("expandido");
+
+// SLIDER GALERIA
+let currentSlide = 0;
+const slides = document.querySelectorAll(".slide");
+function updateSlider(){
+  slides.forEach((s, i) => {
+    s.className = "slide";
+    if(i === currentSlide) s.classList.add("active");
+    else if(i === (currentSlide - 1 + slides.length) % slides.length) s.classList.add("left");
+    else if(i === (currentSlide + 1) % slides.length) s.classList.add("right");
+  });
+}
+function nextSlide(){ currentSlide = (currentSlide + 1) % slides.length; updateSlider(); }
+function prevSlide(){ currentSlide = (currentSlide - 1 + slides.length) % slides.length; updateSlider(); }
+
+// CURSOR
 const dot = document.querySelector(".cursor-dot");
 document.addEventListener("mousemove", e => { dot.style.left = e.clientX + "px"; dot.style.top = e.clientY + "px"; });
 
+// ESTRELAS
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
 let w, h;
@@ -241,11 +352,6 @@ function draw(){
   requestAnimationFrame(draw);
 }
 draw();
-
-const texto="Sei que você sente falta daquela pessoa que você tirou do seu caminho...";
-let i=0;
-function escrever(){ if(i<texto.length){ document.getElementById("typing").textContent+=texto.charAt(i++); setTimeout(escrever,35); } }
-escrever();
 </script>
 </body>
 </html>
