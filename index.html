@@ -1,12 +1,385 @@
-<script>
-function showSection(id,el){
-  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  document.querySelectorAll(".menu-btn").forEach(b=>b.classList.remove("active"));
-  el.classList.add("active");
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Xatspace Glass</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  font-family:'Poppins',sans-serif;
+  background:#5b3a73; 
+  overflow:hidden;
 }
 
-// LISTA DE MÚSICAS CORRIGIDA
+.app {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: scale(0.92);
+  transition: all 1.2s ease;
+}
+
+.app.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.frame-outer {
+  background: rgba(65, 44, 44, 0.2);
+  backdrop-filter: blur(8px);
+  padding: 10px;
+  border-radius: 25px;
+  box-shadow: 0 0 25px rgba(223, 151, 238, 0.25);
+}
+
+.frame-inner {
+  background: rgba(209, 131, 224, 0.226);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 15px;
+}
+
+.container {
+  display: flex;
+  background: rgb(174, 96, 192);
+  border-radius: 15px;
+  width: 600px;
+  height: 440px;
+  position: relative;
+  border: 2px solid rgba(243, 176, 240, 0.35);
+  box-shadow:
+    0 0 18px rgba(255,255,255,0.15),
+    inset 0 0 12px rgba(255,255,255,0.08);
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 35%;
+  background-color: rgba(83, 27, 94, 0.753);
+  border-radius: 15px 0 0 15px;
+  padding: 10px 17px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.sidebar::after {
+  content: "";
+  position: absolute;
+  top: 12px;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(transparent, rgba(255,255,255,0.6), transparent);
+}
+
+.profile-pic img {
+  width: 120px;
+  height: 120px;
+  margin-top: 17px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 6px solid rgba(237, 187, 250, 0.5);
+}
+
+.menu {
+  width: 100%;
+  flex: 1;
+  position: relative;
+  padding-bottom: 70px;
+}
+
+.menu-buttons {
+  margin-left: 20px;
+  width: 80%;
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 2px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #ffffffe3;
+  transition: all .3s ease;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(0,0,0,.35));
+  border: 1px solid rgba(255,255,255,.35);
+  box-shadow: inset 0 0 12px rgba(255,255,255,.12);
+  background-image: linear-gradient(90deg, #ffd1dc, #e0c3ff, #c3f0ff, #ffd1dc);
+  background-size: 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: menuTextFlow 4s linear infinite;
+}
+
+@keyframes menuTextFlow {
+  from { background-position: 0%; }
+  to { background-position: 300%; }
+}
+
+.menu-btn:hover { transform: translateX(4px); }
+.menu-btn.active { transform: scale(1.07); }
+
+/* ===== CONTENIDO ===== */
+.content {
+  flex: 1;
+  background: rgba(0,0,0,.35);
+  border-radius: 0 15px 15px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.section {
+  width: 100%;
+  height: 100%;
+  display: none;
+  animation: fadeIn .6s ease;
+}
+
+.section.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== REPRODUCTOR ===== */
+.reproductor {
+  position: fixed;
+  bottom: 35px;
+  left: 30px;
+  width: 100px;
+  height: 42px;
+  background: linear-gradient(145deg, #e0e0e0, #d6d6d6);
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 5px 8px;
+  transition: all 0.5s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,.2);
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.reproductor.expandido { width: 200px; }
+
+.song-info {
+  opacity: 0;
+  width: 100px;
+  transform: translateX(-20px);
+  transition: all .5s ease;
+  color: #000;
+  font-size: 11px;
+}
+
+.reproductor.expandido .song-info { opacity: 1; transform: translateX(0); }
+
+.titulo { margin: 0; font-weight: 600; white-space: nowrap; overflow: hidden; }
+.cancion { margin: 0; opacity: .8; white-space: nowrap; overflow: hidden; }
+
+.btn-control {
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/* ===== TITULOS GLASS ===== */
+.title-glass {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  width: fit-content;
+  padding: 6px 20px;
+  background: rgba(255,255,255,.15);
+  backdrop-filter: blur(14px);
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.4);
+}
+
+.inicio-title, .amigos-title, .gallery-title {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, #ffd6e8, #e0c3ff, #c3f0ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glowMove 4s linear infinite;
+}
+
+@keyframes glowMove {
+  from { filter: hue-rotate(0deg); }
+  to { filter: hue-rotate(360deg); }
+}
+
+/* ===== SOBRE MI ===== */
+.sobremi-wrapper { padding: 50px 20px; text-align: center; }
+.sobremi-nombre { font-size: 24px; font-weight: 600; color: #fff; }
+.sobremi-texto { font-size: 13px; color: #eee; white-space: pre-line; margin-top: 15px; }
+
+/* ===== GALERIA ===== */
+.gallery-box { height: 280px; position: relative; margin-top: 20px; }
+.slider { display: flex; justify-content: center; align-items: center; height: 100%; position: relative; }
+.slide { position: absolute; width: 150px; height: 220px; border-radius: 12px; overflow: hidden; transition: .5s; filter: brightness(0.4); transform: scale(0.8); }
+.slide.active { transform: scale(1.1); filter: brightness(1); z-index: 2; border: 2px solid #fff; }
+.slide.left { transform: translateX(-120px) scale(0.8); opacity: 0.6; }
+.slide.right { transform: translateX(120px) scale(0.8); opacity: 0.6; }
+.slide img { width: 100%; height: 100%; object-fit: cover; }
+
+.nav { position: absolute; top: 50%; background: rgba(255,255,255,0.3); color: #fff; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; }
+.nav.prev { left: 10px; }
+.nav.next { right: 10px; }
+
+/* ===== INTRO & CURSOR ===== */
+#intro { position: fixed; inset: 0; background: #3b1c49; display: flex; justify-content: center; align-items: center; z-index: 99999; transition: 1s; }
+.gold-btn { padding: 15px 40px; border-radius: 30px; background: #784192; color: #fff; border: 2px solid #a737d4; cursor: pointer; letter-spacing: 2px; }
+
+.cursor-dot, .cursor-ring { position: fixed; pointer-events: none; z-index: 100000; transform: translate(-50%, -50%); }
+.cursor-dot { width: 6px; height: 6px; background: #fff; border-radius: 50%; }
+.cursor-ring { width: 30px; height: 30px; border: 2px solid rgba(226, 200, 255, 0.6); border-radius: 50%; transition: 0.1s; }
+
+.star-explosion { position: fixed; width: 8px; height: 8px; background: #be4dff; border-radius: 50%; pointer-events: none; animation: explode .6s forwards; }
+@keyframes explode { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(4); opacity: 0; } }
+
+#stars { position: fixed; inset: 0; z-index: -1; }
+.footer { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 10px; color: rgba(255,255,255,0.5); }
+
+/* AMIGOS COLLAGE */
+.amigos-collage { position: relative; height: 250px; margin-top: 20px; }
+.amigo-polaroid { position: absolute; width: 120px; background: rgba(255,255,255,0.1); padding: 5px; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+.amigo-polaroid img { width: 100%; border-radius: 3px; }
+.amigo-polaroid p { margin: 5px 0 0; color: #fff; font-size: 10px; text-align: center; }
+.polaroid-0 { left: 50px; transform: rotate(-5deg); }
+.polaroid-1 { right: 50px; transform: rotate(5deg); }
+
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 10000; }
+.modal-overlay.active { display: flex; }
+.modal-contenido { background: #d29bf1; padding: 20px; border-radius: 15px; text-align: center; width: 250px; }
+
+html, body, * { cursor: none !important; }
+</style>
+</head>
+<body>
+
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+
+<div id="intro">
+  <button class="gold-btn">ENTRAR</button>
+</div>
+
+<canvas id="stars"></canvas>
+
+<div class="app">
+  <div class="frame-outer">
+    <div class="frame-inner">
+      <div class="container">
+        
+        <div class="sidebar">
+          <div class="profile-pic">
+            <img src="https://xatimg.com/image/H3nFl0QOK3f7.jpg">
+          </div>
+          <div class="menu">
+            <div class="menu-buttons">
+              <div class="menu-btn active" onclick="showSection('inicio', this)">♡ Inicio ♡</div>
+              <div class="menu-btn" onclick="showSection('sobremi', this)">♡ Sobre mim ♡</div>
+              <div class="menu-btn" onclick="showSection('amigos', this)">♡ Amigos ♡</div>
+              <div class="menu-btn" onclick="showSection('galeria', this)">♡ Galeria ♡</div>
+              
+              <div class="reproductor" id="reproductor">
+                <div class="song-info">
+                  <p class="titulo" id="artist">Carregando...</p>
+                  <p class="cancion" id="title">...</p>
+                </div>
+                <div class="controles">
+                  <button class="btn-control" id="nextBtn">⏭</button>
+                  <button class="btn-control" id="playBtn">▶</button>
+                </div>
+                <audio id="audio"></audio>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="section active" id="inicio">
+            <div class="inicio-wrapper">
+              <div class="title-glass"><div class="inicio-title">Bem vindos ao meu Xatspace</div></div>
+              <div style="text-align:center; margin-top:30px;">
+                <img src="https://xatimg.com/image/ytKJxwb0uEco.gif" style="max-width:300px;">
+              </div>
+            </div>
+          </div>
+
+          <div class="section" id="sobremi">
+            <div class="sobremi-wrapper">
+              <div class="sobremi-nombre">Gabr</div>
+              <div style="color:#ffffffb0; font-size:12px;">ID: 1777777</div>
+              <div class="sobremi-texto"><span id="typing"></span></div>
+            </div>
+          </div>
+
+          <div class="section" id="amigos">
+            <div class="title-glass"><div class="amigos-title">MEUS AMIGOS</div></div>
+            <div class="amigos-collage">
+              <div class="amigo-polaroid polaroid-0" onclick="openModal('Amigo 1','Sempre presente!')">
+                <img src="https://xatimg.com/image/PEq5yNtkJRP3.jpg"><p>Gold</p>
+              </div>
+              <div class="amigo-polaroid polaroid-1" onclick="openModal('Mnna ♡','Meu amor.')">
+                <img src="https://xatimg.com/image/H3nFl0QOK3f7.jpg"><p>Mnna</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="section" id="galeria">
+            <div class="title-glass"><div class="gallery-title">GALERIA</div></div>
+            <div class="gallery-box">
+              <div class="slider">
+                <div class="slide active"><img src="https://xatimg.com/image/q3UtxK6jIr20.jpg"></div>
+                <div class="slide right"><img src="https://xatimg.com/image/K6IVS49hl2wQ.jpg"></div>
+                <div class="slide"><img src="https://xatimg.com/image/q3UtxK6jIr20.jpg"></div>
+              </div>
+              <div class="nav prev" onclick="prev()">❮</div>
+              <div class="nav next" onclick="next()">❯</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">By: Gabr</div>
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal-contenido">
+    <h3 id="modalNombre"></h3>
+    <p id="modalDesc"></p>
+    <button onclick="closeModal()" style="cursor:pointer;">Fechar</button>
+  </div>
+</div>
+
+<script>
+// PLAYLIST CORRIGIDA
 const songs = [
   { artist: "Abraham Mateo", title: "BAI LALA", src: "https://www.dropbox.com/scl/fi/gw8940zfvm60ul7malxox/Abraham-Mateo-BAI-LALA.mp3?rlkey=puytwnkxllb6tmz35htfr8tmh&st=ud55ktgf&raw=1" },
   { artist: "Alex Warren", title: "Ordinary", src: "https://www.dropbox.com/scl/fi/lpcx92wv63wzcm6z56l7q/Alex-Warren-Ordinary.mp3?rlkey=pdxjo778t66ecrja08pfyij6k&st=zb53k17t&raw=1" },          
@@ -17,48 +390,39 @@ const songs = [
 
 let current = 0;
 let isPlaying = false;
-
 const audio = document.getElementById("audio");
 const playBtn = document.getElementById("playBtn");
-const nextBtn = document.getElementById("nextBtn");
-const artist = document.getElementById("artist");
-const title = document.getElementById("title");
-const reproductor = document.getElementById("reproductor");
+const artistTxt = document.getElementById("artist");
+const titleTxt = document.getElementById("title");
 
 function loadSong(index) {
   audio.src = songs[index].src;
-  artist.textContent = songs[index].artist;
-  title.textContent = songs[index].title;
-  
+  artistTxt.textContent = songs[index].artist;
+  titleTxt.textContent = songs[index].title;
   audio.play().then(() => {
     isPlaying = true;
     playBtn.textContent = "❚❚";
-  }).catch(e => console.log("Erro ao tocar:", e));
+  }).catch(e => console.log("Erro som:", e));
 }
 
-// BOTÃO ENTRAR - DISPARA O SOM
+// INICIAR AO ENTRAR
 document.querySelector(".gold-btn").onclick = () => {
   document.getElementById("intro").style.opacity = 0;
   setTimeout(() => {
     document.getElementById("intro").style.display = "none";
     document.querySelector(".app").classList.add("show");
-    loadSong(current); // Começa a tocar aqui
+    loadSong(current);
   }, 1000);
 };
 
 playBtn.onclick = (e) => {
   e.stopPropagation();
-  if (isPlaying) {
-    audio.pause();
-    playBtn.textContent = "▶";
-  } else {
-    audio.play();
-    playBtn.textContent = "❚❚";
-  }
+  if (isPlaying) { audio.pause(); playBtn.textContent = "▶"; }
+  else { audio.play(); playBtn.textContent = "❚❚"; }
   isPlaying = !isPlaying;
 };
 
-nextBtn.onclick = (e) => {
+document.getElementById("nextBtn").onclick = (e) => {
   e.stopPropagation();
   current = (current + 1) % songs.length;
   loadSong(current);
@@ -70,109 +434,95 @@ audio.onended = () => {
   loadSong(current);
 };
 
-reproductor.addEventListener("mouseenter", () => reproductor.classList.add("expandido"));
-reproductor.addEventListener("mouseleave", () => reproductor.classList.remove("expandido"));
+const reproductor = document.getElementById("reproductor");
+reproductor.onmouseenter = () => reproductor.classList.add("expandido");
+reproductor.onmouseleave = () => reproductor.classList.remove("expandido");
 
-// TEXTO TYPING
-const texto=`Sei que você sente falta daquela pessoa que você tirou do seu caminho ou que mesmo ela te tirou. Para lembrar que essa pessoa já não é quem você amou/quis algum dia. Essa pessoa mudou, talvez para melhor ou para pior, por isso a função dela nesta vida já terminou, já chegou ao fim, deixe-a ir, agradeça pelo aprendizado e por mais doloroso que seja, aceite o fim.`;
-let i=0;
-const typing=document.getElementById("typing");
-(function escribir(){
-  if(i<texto.length){
-    typing.textContent+=texto.charAt(i++);
-    setTimeout(escribir,35);
+// TYPING
+const texto = `Sei que você sente falta daquela pessoa que você tirou do seu caminho ou que mesmo ela te tirou. Para lembrar que essa pessoa já não é quem você amou/quis algum dia. Essa pessoa mudou, talvez para melhor ou para pior, por isso a função dela nesta vida já terminou, já chegou ao fim, deixe-a ir, agradeça pelo aprendizado e por mais doloroso que seja, aceite o fim.`;
+let i = 0;
+function typingEffect() {
+  if (i < texto.length) {
+    document.getElementById("typing").textContent += texto.charAt(i++);
+    setTimeout(typingEffect, 35);
   }
-})();
-
-// MODAL AMIGOS
-const modal = document.getElementById("modal");
-const modalNombre = document.getElementById("modalNombre");
-const modalDesc = document.getElementById("modalDesc");
-
-function openModal(nombre, desc){
-  modalNombre.textContent = nombre;
-  modalDesc.textContent = desc;
-  modal.classList.add("active");
 }
-function closeModal(){ modal.classList.remove("active"); }
-modal.addEventListener("click", e => { if(e.target === modal) closeModal(); });
+typingEffect();
+
+// SECTIONS
+function showSection(id, el) {
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll(".menu-btn").forEach(b => b.classList.remove("active"));
+  el.classList.add("active");
+}
+
+// MODAL
+function openModal(n, d) {
+  document.getElementById("modalNombre").textContent = n;
+  document.getElementById("modalDesc").textContent = d;
+  document.getElementById("modal").classList.add("active");
+}
+function closeModal() { document.getElementById("modal").classList.remove("active"); }
 
 // GALERIA
-const slides = document.querySelectorAll('#galeria .slide');
+const slides = document.querySelectorAll('.slide');
 let currentSlide = 0;
-
-function update(){
-  slides.forEach((s,i)=>{
+function updateGallery() {
+  slides.forEach((s, idx) => {
     s.className = 'slide';
-    if(i === currentSlide) s.classList.add('active');
-    else if(i === (currentSlide - 1 + slides.length) % slides.length) s.classList.add('left');
-    else if(i === (currentSlide + 1) % slides.length) s.classList.add('right');
+    if (idx === currentSlide) s.classList.add('active');
+    else if (idx === (currentSlide - 1 + slides.length) % slides.length) s.classList.add('left');
+    else if (idx === (currentSlide + 1) % slides.length) s.classList.add('right');
   });
 }
-function next(){ currentSlide = (currentSlide + 1) % slides.length; update(); }
-function prev(){ currentSlide = (currentSlide - 1 + slides.length) % slides.length; update(); }
+function next() { currentSlide = (currentSlide + 1) % slides.length; updateGallery(); }
+function prev() { currentSlide = (currentSlide - 1 + slides.length) % slides.length; updateGallery(); }
 
 // CURSOR
 const dot = document.querySelector(".cursor-dot");
 const ring = document.querySelector(".cursor-ring");
-let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-
-document.addEventListener("mousemove", e => {
-  mouseX = e.clientX; mouseY = e.clientY;
-  dot.style.left = mouseX + "px"; dot.style.top = mouseY + "px";
-});
-
-function animateCursor() {
-  ringX += (mouseX - ringX) * 0.15;
-  ringY += (mouseY - ringY) * 0.15;
-  ring.style.left = ringX + "px"; ring.style.top = ringY + "px";
-  requestAnimationFrame(animateCursor);
+let mX = 0, mY = 0, rX = 0, rY = 0;
+document.onmousemove = (e) => {
+  mX = e.clientX; mY = e.clientY;
+  dot.style.left = mX + "px"; dot.style.top = mY + "px";
+};
+function anim() {
+  rX += (mX - rX) * 0.15; rY += (mY - rY) * 0.15;
+  ring.style.left = rX + "px"; ring.style.top = rY + "px";
+  requestAnimationFrame(anim);
 }
-animateCursor();
+anim();
+document.onclick = (e) => {
+  const s = document.createElement("div");
+  s.className = "star-explosion";
+  s.style.left = e.clientX + "px"; s.style.top = e.clientY + "px";
+  document.body.appendChild(s);
+  setTimeout(() => s.remove(), 600);
+};
 
-document.querySelectorAll("button, a, .menu-btn").forEach(el => {
-  el.addEventListener("mouseenter", () => document.body.classList.add("cursor-hover"));
-  el.addEventListener("mouseleave", () => document.body.classList.remove("cursor-hover"));
-});
-
-document.addEventListener("mousedown", () => {
-  document.body.classList.add("cursor-click");
-  const star = document.createElement("div");
-  star.className = "star-explosion";
-  star.style.left = mouseX + "px"; star.style.top = mouseY + "px";
-  document.body.appendChild(star);
-  setTimeout(() => star.remove(), 600);
-});
-document.addEventListener("mouseup", () => document.body.classList.remove("cursor-click"));
-
-// SEGURANÇA
-document.addEventListener('contextmenu', e => e.preventDefault());
-document.addEventListener('selectstart', e => e.preventDefault());
-document.addEventListener('dragstart', e => e.preventDefault());
-
-// STARS BACKGROUND
+// STARS BG
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
 let w, h;
-function resize(){ w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-window.addEventListener("resize", resize);
-resize();
-
-const starArray = [];
-for(let i=0;i<120;i++){
-  starArray.push({ x: Math.random()*w, y: Math.random()*h, r: Math.random()*1.5 + 0.5, speed: Math.random()*0.4 + 0.2, alpha: Math.random()*0.5 + 0.4 });
-}
-function drawStars(){
+function res() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+window.onresize = res; res();
+const parts = [];
+for(let k=0; k<100; k++) parts.push({ x:Math.random()*w, y:Math.random()*h, s:Math.random()*0.5+0.2 });
+function draw() {
   ctx.clearRect(0,0,w,h);
-  starArray.forEach(s=>{
-    ctx.beginPath();
-    ctx.fillStyle = `rgba(215,190,235,${s.alpha})`;
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-    ctx.fill();
-    s.y += s.speed;
-    if(s.y > h) s.y = -5;
+  ctx.fillStyle = "#d7beeb";
+  parts.forEach(p => {
+    ctx.beginPath(); ctx.arc(p.x, p.y, 1, 0, 7); ctx.fill();
+    p.y += p.s; if(p.y > h) p.y = -5;
   });
-  requestAnimationFrame(drawStars);
+  requestAnimationFrame(draw);
 }
-drawStars();
+draw();
+
+// SEGURANÇA
+document.oncontextmenu = (e) => e.preventDefault();
+document.onselectstart = (e) => e.preventDefault();
 </script>
+</body>
+</html>
