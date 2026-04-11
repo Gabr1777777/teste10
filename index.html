@@ -465,7 +465,7 @@ body{
 }
 /* === REPRODUCTOR === */
 .reproductor {
-  position: fixed;   /* ← CLAVE */
+  position: fixed;   
   bottom: 35px;
   left: 30px;
 
@@ -673,7 +673,6 @@ body {
   transform: translate(-50%, -50%);
 }
 
-/* ✨ luz en movimento */
 .cursor-dot::after {
   content: "";
   position: absolute;
@@ -686,13 +685,6 @@ body {
   animation: glowMove 1.2s linear infinite;
 }
 
-@keyframes glowMove {
-  0% { transform: translateX(-4px); }
-  50% { transform: translateX(4px); }
-  100% { transform: translateX(-4px); }
-}
-
-/* 🟢 ANILLO (NO SE TOCA) */
 .cursor-ring {
   width: 36px;
   height: 36px;
@@ -704,14 +696,12 @@ body {
   transition: width .15s ease, height .15s ease, border .15s ease;
 }
 
-/* Hover */
 .cursor-hover .cursor-ring {
   width: 52px;
   height: 52px;
   border-color: rgba(236, 160, 255, 0.9);
 }
 
-/* Click */
 .cursor-click .cursor-ring {
   width: 26px;
   height: 26px;
@@ -745,83 +735,50 @@ body {
   }
 }
 
-
-/* OCULTAR CURSOR REAL */
 html, body, * {
   cursor: none !important;
+  user-select: none !important; /* Bloqueia seleção */
+  -webkit-user-select: none;
 }
 
-/* ===== MENU BUTTONS – VIDRIO + LUZ ===== */
+/* ===== MENU BUTTONS ===== */
 .menu-btn {
   position: relative;
   overflow: hidden;
-
   backdrop-filter: blur(12px) saturate(160%);
   -webkit-backdrop-filter: blur(12px) saturate(160%);
-
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,.12),
-    rgba(0,0,0,.35)
-  );
-
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(0,0,0,.35));
   border: 1px solid rgba(255,255,255,.35);
-  box-shadow:
-    inset 0 0 12px rgba(255,255,255,.12),
-    0 0 14px rgba(255,255,255,.12);
+  box-shadow: inset 0 0 12px rgba(255,255,255,.12), 0 0 14px rgba(255,255,255,.12);
 }
 
-/* reflejo tipo vidrio */
 .menu-btn::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    120deg,
-    rgba(255,255,255,.45),
-    rgba(255,255,255,.08),
-    transparent 60%
-  );
+  background: linear-gradient(120deg, rgba(255,255,255,.45), rgba(255,255,255,.08), transparent 60%);
   opacity: .35;
   pointer-events: none;
 }
 
-/* brillo suave al hover */
 .menu-btn::after {
   content: "";
   position: absolute;
   inset: -60%;
-  background: radial-gradient(
-    circle,
-    rgba(255,255,255,.35),
-    transparent 55%
-  );
+  background: radial-gradient(circle, rgba(255,255,255,.35), transparent 55%);
   opacity: 0;
   transition: opacity .4s ease;
 }
 
-.menu-btn:hover::after {
-  opacity: .55;
-}
+.menu-btn:hover::after { opacity: .55; }
 
-/* ===== TEXTO MENU GRADIENTE ===== */
 .menu-btn {
-  background-image: linear-gradient(
-    90deg,
-    #ffd1dc,
-    #e0c3ff,
-    #c3f0ff,
-    #ffd1dc
-  );
+  background-image: linear-gradient(90deg, #ffd1dc, #e0c3ff, #c3f0ff, #ffd1dc);
   background-size: 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-
   animation: menuTextFlow 4s linear infinite;
-
-  text-shadow:
-    0 0 6px rgba(255,200,220,.5),
-    0 0 12px rgba(180,200,255,.35);
+  text-shadow: 0 0 6px rgba(255,200,220,.5), 0 0 12px rgba(180,200,255,.35);
 }
 
 @keyframes menuTextFlow {
@@ -829,90 +786,27 @@ html, body, * {
   to   { background-position: 300%; }
 }
 
-/* ===== CONTENEDOR GLASS PARA TÍTULOS ===== */
 .title-glass {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-
   padding: 6px 20px;
-  margin: 0 auto;
-
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,.18),
-    rgba(255,255,255,.05)
-  );
-
+  margin: 20px auto;
+  background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.05));
   backdrop-filter: blur(14px) saturate(160%);
   -webkit-backdrop-filter: blur(14px) saturate(160%);
-
   border-radius: 18px;
   border: 1px solid rgba(255,255,255,.45);
-
-  box-shadow:
-    inset 0 0 14px rgba(255,255,255,.18),
-    0 0 22px rgba(255,255,255,.18);
-
-  pointer-events: none; /* el texto NO se mueve */
+  box-shadow: inset 0 0 14px rgba(255,255,255,.18), 0 0 22px rgba(255,255,255,.18);
+  pointer-events: none;
+  width: fit-content;
 }
 
-/* ===== CORREGIR MOVIMIENTO DE LOS TITULOS ===== */
-.inicio-title,
-.amigos-title,
-.gallery-title {
-  position: static !important;
-  animation: glowMove 4s linear infinite; /* solo brillo */
-}
-
-/* ===== CENTRAR TITULOS GLASS ===== */
-.title-glass {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  margin: 20px auto;   /* ← centra horizontal */
-  width: fit-content; /* ajusta al texto */
-}
-
-/* asegurar centrado del texto interno */
-.inicio-title,
-.amigos-title,
-.gallery-title {
-  text-align: center;
-}
-
-/* ===== AJUSTE FINO TITULOS ===== */
-#amigos .title-glass {
-  margin-top: 48px;   /* un poco más abajo */
-  margin-bottom: 10px;
-}
-
-#galeria .title-glass {
-  margin-top: 8px;    /* un poco más arriba */
-  margin-bottom: 6px;
-}
-/* ===== LIMPIAR POSICIONAMIENTO ANTIGUO ===== */
-.amigos-title,
-.gallery-title {
-  top: auto !important;
-}
-
-.amigos-container,
-.gallery-box {
-  top: auto !important;
-}
-/* ===== GALERIA CENTRADA COMO ANTES ===== */
 #galeria {
   margin-top: 10%;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.gallery-box {
-  margin-top: -10px;   /* sube el slider */
-  height: 80%;        /* mantém proporção */
 }
 
 #stars{
@@ -921,10 +815,9 @@ html, body, * {
   width:100%;
   height:100%;
   z-index:-1;
-  background:#5b3a73; /* fundo morado */
+  background:#5b3a73;
 }
 
-/* FOOTER */
 .footer{
   position:absolute;
   bottom:30px;
@@ -933,10 +826,35 @@ html, body, * {
   font-size:8px;
   color:#fdeef0aa;
 }
+
+/* ALERTA DE SEGURANÇA */
+#security-alert {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: rgba(83, 27, 94, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(237, 187, 250, 0.5);
+  padding: 10px 25px;
+  border-radius: 20px;
+  color: #edc8fc;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  box-shadow: 0 0 15px rgba(212, 120, 255, 0.4);
+  z-index: 1000000;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+}
+
+#security-alert.show {
+  transform: translateX(-50%) translateY(0);
+}
 </style>
 </head>
 
-<body>
+<body oncontextmenu="return false;">
 <div class="cursor-dot"></div>
 <div class="cursor-ring"></div>
 
@@ -946,6 +864,8 @@ html, body, * {
   </button>
 </div>
 <canvas id="stars"></canvas>
+
+<div id="security-alert">Copyright - Acesso Proibido</div>
 
 <div class="app">
   <div class="frame-outer">
@@ -988,117 +908,109 @@ html, body, * {
         <div class="content">
           <div class="section active" id="inicio">
             <div class="inicio-wrapper">
-          <div class="title-glass">
-  <div class="inicio-title"> Bem vindos ao meu Xatspace </div>
-</div>
+              <div class="title-glass">
+                <div class="inicio-title"> Bem vindos ao meu Xatspace </div>
+              </div>
               <div class="firma">
                 <img src="https://xatimg.com/image/ytKJxwb0uEco.gif">
               </div>
             </div>
           </div>
 
-<div class="section" id="sobremi">
-  <div class="sobremi-wrapper">
-    <div class="sobremi-content">
-      <div class="sobremi-nombre">Name</div>
-      <div class="sobremi-id">ID: 123456</div>
-      <div class="sobremi-pais">
-        <span>País:</span><img src="https://flagcdn.com/w20/br.png"><span>Brasil</span>
-      </div>
-      <div class="sobremi-linea"></div>
-      <div class="sobremi-texto">
-        <span id="typing"></span><span class="cursor"></span>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="section" id="amigos">
+          <div class="section" id="sobremi">
+            <div class="sobremi-wrapper">
+              <div class="sobremi-content">
+                <div class="sobremi-nombre">Name</div>
+                <div class="sobremi-id">ID: 123456</div>
+                <div class="sobremi-pais">
+                  <span>País:</span><img src="https://flagcdn.com/w20/br.png"><span>Brasil</span>
+                </div>
+                <div class="sobremi-linea"></div>
+                <div class="sobremi-texto">
+                  <span id="typing"></span><span class="cursor"></span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-<div class="title-glass">
-  <div class="amigos-title"> MEUS AMIGOS </div>
-</div>
+          <div class="section" id="amigos">
+            <div class="title-glass">
+              <div class="amigos-title"> MEUS AMIGOS </div>
+            </div>
+            <div class="amigos-container">
+              <div class="amigos-collage">
+                <div class="amigo-polaroid polaroid-0" onclick="openModal('Name ♡','frase')">
+                  <img src="https://xatimg.com/image/PEq5yNtkJRP3.jpg">
+                  <p>Name</p>
+                </div>
+                <div class="amigo-polaroid polaroid-1" onclick="openModal('Name ♡','frase')">
+                  <img src="https://xatimg.com/image/H3nFl0QOK3f7.jpg">
+                  <p>Name</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-  <div class="amigos-container">
-    <div class="amigos-collage">
+          <div class="section" id="galeria">
+            <div class="title-glass">
+              <div class="gallery-title"> GALERIA </div>
+            </div>
+            <div class="gallery-box">
+              <div class="slider">
+                <div class="slide active"><img src="https://xatimg.com/image/q3UtxK6jIr20.jpg"></div>
+                <div class="slide right"><img src="https://xatimg.com/image/K6IVS49hl2wQ.jpg"></div>
+                <div class="slide"><img src="https://xatimg.com/image/q3UtxK6jIr20.jpg"></div>
+                <div class="slide"><img src="https://xatimg.com/image/K6IVS49hl2wQ.jpg"></div>
+                <div class="slide"><img src="https://xatimg.com/image/q3UtxK6jIr20.jpg"></div>
+                <div class="slide"><img src="https://xatimg.com/image/K6IVS49hl2wQ.jpg"></div>
+                <div class="slide"><img src="https://xatimg.com/image/q3UtxK6jIr20.jpg"></div>
+              </div>
+              <div class="nav prev" onclick="prev()">❮</div>
+              <div class="nav next" onclick="next()">❯</div>
+            </div>
+          </div>
 
-      <div class="amigo-polaroid polaroid-0"
-        onclick="openModal('Name ♡','frase')">
-        <img src="https://xatimg.com/image/PEq5yNtkJRP3.jpg">
-        <p>Name</p>
-      </div>
-
-      <div class="amigo-polaroid polaroid-1"
-        onclick="openModal('Name ♡','frase')">
-        <img src="https://xatimg.com/image/H3nFl0QOK3f7.jpg">
-        <p>Name</p>
-      </div>
-
-    </div>
-  </div>
-
-</div>
-
-<div class="section" id="galeria">
-
-<div class="title-glass">
-  <div class="gallery-title"> GALERIA </div>
-</div>
-
-  <div class="gallery-box">
-    <div class="slider">
-
-      <div class="slide active">
-        <img src="https://xatimg.com/image/q3UtxK6jIr20.jpg">
-      </div>
-
-      <div class="slide right">
-        <img src="https://xatimg.com/image/K6IVS49hl2wQ.jpg">
-      </div>
-      
-      <div class="slide">
-        <img src="https://xatimg.com/image/q3UtxK6jIr20.jpg">
-      </div>
-
-      <div class="slide">
-        <img src="https://xatimg.com/image/K6IVS49hl2wQ.jpg">
-      </div>
-
-      <div class="slide">
-        <img src="https://xatimg.com/image/q3UtxK6jIr20.jpg">
-      </div>
-
-      <div class="slide">
-        <img src="https://xatimg.com/image/K6IVS49hl2wQ.jpg">
-      </div>
-
-      <div class="slide">
-        <img src="https://xatimg.com/image/q3UtxK6jIr20.jpg">
-      </div>
-
-
-    </div>
-
-    <div class="nav prev" onclick="prev()">❮</div>
-    <div class="nav next" onclick="next()">❯</div>
-  </div>
-
-</div>
-
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="modal-overlay" id="modal">
-  <div class="modal-contenido">
-    <h3 id="modalNombre"></h3>
-    <p id="modalDesc"></p>
-    <button onclick="closeModal()">Cerrar</button>
-  </div>
-</div>
 
-      <div class="footer"> By: Gabr </div>
+  <div class="modal-overlay" id="modal">
+    <div class="modal-contenido">
+      <h3 id="modalNombre"></h3>
+      <p id="modalDesc"></p>
+      <button onclick="closeModal()">Cerrar</button>
     </div>
+  </div>
+
+  <div class="footer"> By: Gabr </div>
+
 <script>
+// TRAVAS DE SEGURANÇA
+const alertBox = document.getElementById('security-alert');
+function triggerAlert() {
+  alertBox.classList.add('show');
+  setTimeout(() => alertBox.classList.remove('show'), 2000);
+}
+
+document.addEventListener('contextmenu', e => {
+  e.preventDefault();
+  triggerAlert();
+});
+
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.key === 'U')) {
+    e.preventDefault();
+    triggerAlert();
+  }
+});
+
+document.addEventListener('selectstart', e => {
+  e.preventDefault();
+  triggerAlert();
+});
+
+// FUNCIONALIDADES DO SITE
 function showSection(id,el){
   document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
@@ -1108,17 +1020,12 @@ function showSection(id,el){
 
 document.querySelector(".gold-btn").onclick = () => {
   document.getElementById("intro").style.opacity = 0;
-
   setTimeout(() => {
     document.getElementById("intro").style.display = "none";
     document.querySelector(".app").classList.add("show");
-
-    // 🔊 AUTOPLAY DESPUÉS DO CLICK
     loadSong(current);
-
   }, 1000);
 };
-
 
 const texto=`Sei que você sente falta daquela pessoa que você tirou do seu caminho ou que mesmo ela te tirou. Para lembrar que essa pessoa já não é quem você amou/quis algum dia. Essa pessoa mudou, talvez para melhor ou para pior, por isso a função dela nesta vida já terminou, já chegou ao fim, deixe-a ir, agradeça pelo aprendizado e por mais doloroso que seja, aceite o fim.`;
 let i=0;
@@ -1148,13 +1055,13 @@ modal.addEventListener("click", e=>{
   if(e.target === modal) closeModal();
 });
 
-  const playlist = [
-            { name: "Abraham-Mateo - BAI LALA", url: "https://www.dropbox.com/scl/fi/gw8940zfvm60ul7malxox/Abraham-Mateo-BAI-LALA.mp3?rlkey=puytwnkxllb6tmz35htfr8tmh&st=ud55ktgf&raw=1" },
-            { name: "Alex Warren - Ordinary", url: "https://www.dropbox.com/scl/fi/lpcx92wv63wzcm6z56l7q/Alex-Warren-Ordinary.mp3?rlkey=pdxjo778t66ecrja08pfyij6k&st=zb53k17t&raw=1" },          
-            { name: "Eminem - You dont know", url: "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=wy1w0icm&raw=1" },
-            { name: "The Sound of Silence – Rising to the Night", url: "https://www.dropbox.com/scl/fi/2y9zhx5zjsdxg3zljc2f9/sound-of-silence.mp3.mp3?rlkey=88zg0td3loy40uxmcm9rnk1jt&st=qty8093e&raw=1" },
-            { name: "Desireless - Voyage Voyage", url: "https://www.dropbox.com/scl/fi/cqqhzkv1ll1p09z7qgylp/Desireless-voyage-voyage.mp3.mp3?rlkey=hscvkehw7n7vvgi2im4rwhom7&st=2ldonj76&raw=1" }
-        ];
+const playlist = [
+  { name: "Abraham-Mateo - BAI LALA", url: "https://www.dropbox.com/scl/fi/gw8940zfvm60ul7malxox/Abraham-Mateo-BAI-LALA.mp3?rlkey=puytwnkxllb6tmz35htfr8tmh&st=ud55ktgf&raw=1" },
+  { name: "Alex Warren - Ordinary", url: "https://www.dropbox.com/scl/fi/lpcx92wv63wzcm6z56l7q/Alex-Warren-Ordinary.mp3?rlkey=pdxjo778t66ecrja08pfyij6k&st=zb53k17t&raw=1" },          
+  { name: "Eminem - You dont know", url: "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=wy1w0icm&raw=1" },
+  { name: "The Sound of Silence – Rising to the Night", url: "https://www.dropbox.com/scl/fi/2y9zhx5zjsdxg3zljc2f9/sound-of-silence.mp3.mp3?rlkey=88zg0td3loy40uxmcm9rnk1jt&st=qty8093e&raw=1" },
+  { name: "Desireless - Voyage Voyage", url: "https://www.dropbox.com/scl/fi/cqqhzkv1ll1p09z7qgylp/Desireless-voyage-voyage.mp3.mp3?rlkey=hscvkehw7n7vvgi2im4rwhom7&st=2ldonj76&raw=1" }
+];
 
 let current = 0;
 let isPlaying = false;
@@ -1170,12 +1077,9 @@ const volumeRange = document.getElementById("volumeRange");
 function loadSong(index) {
   const song = playlist[index];
   audio.src = song.url;
-  
-  // Dividir o nome para preencher os campos
   const parts = song.name.split(" - ");
   artist.textContent = parts[0] || "Artista";
   title.textContent = parts[1] || "";
-
   audio.play().then(() => {
     isPlaying = true;
     playBtn.textContent = "❚❚";
@@ -1187,13 +1091,8 @@ function loadSong(index) {
 
 playBtn.onclick = (e) => {
   e.stopPropagation();
-  if (isPlaying) {
-    audio.pause();
-    playBtn.textContent = "▶";
-  } else {
-    audio.play();
-    playBtn.textContent = "❚❚";
-  }
+  if (isPlaying) { audio.pause(); playBtn.textContent = "▶"; } 
+  else { audio.play(); playBtn.textContent = "❚❚"; }
   isPlaying = !isPlaying;
 };
 
@@ -1208,20 +1107,10 @@ audio.onended = () => {
   loadSong(current);
 };
 
-// Controle Volume
-volumeRange.oninput = (e) => {
-  audio.volume = e.target.value;
-};
+volumeRange.oninput = (e) => { audio.volume = e.target.value; };
 
-reproductor.addEventListener("mouseenter", () => {
-  reproductor.classList.add("expandido");
-});
-
-reproductor.addEventListener("mouseleave", () => {
-  reproductor.classList.remove("expandido");
-});
-
-
+reproductor.addEventListener("mouseenter", () => reproductor.classList.add("expandido"));
+reproductor.addEventListener("mouseleave", () => reproductor.classList.remove("expandido"));
 
 const slides = document.querySelectorAll('#galeria .slide');
 let currentSlide = 0;
@@ -1230,150 +1119,73 @@ function update(){
   slides.forEach((s,i)=>{
     s.className = 'slide';
     if(i === currentSlide) s.classList.add('active');
-    else if(i === (currentSlide - 1 + slides.length) % slides.length)
-      s.classList.add('left');
-    else if(i === (currentSlide + 1) % slides.length)
-      s.classList.add('right');
+    else if(i === (currentSlide - 1 + slides.length) % slides.length) s.classList.add('left');
+    else if(i === (currentSlide + 1) % slides.length) s.classList.add('right');
   });
 }
 
-function next(){
-  currentSlide = (currentSlide + 1) % slides.length;
-  update();
-}
-
-function prev(){
-  currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-  update();
-}
+function next(){ currentSlide = (currentSlide + 1) % slides.length; update(); }
+function prev(){ currentSlide = (currentSlide - 1 + slides.length) % slides.length; update(); }
 
 const dot = document.querySelector(".cursor-dot");
 const ring = document.querySelector(".cursor-ring");
+let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
 
-let mouseX = 0, mouseY = 0;
-let ringX = 0, ringY = 0;
-
-// Movimiento real
 document.addEventListener("mousemove", e => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-
-  dot.style.left = mouseX + "px";
-  dot.style.top = mouseY + "px";
+  mouseX = e.clientX; mouseY = e.clientY;
+  dot.style.left = mouseX + "px"; dot.style.top = mouseY + "px";
 });
 
-// Suavizado del anillo
 function animate() {
   ringX += (mouseX - ringX) * 0.15;
   ringY += (mouseY - ringY) * 0.15;
-
   ring.style.left = ringX + "px";
   ring.style.top = ringY + "px";
-
   requestAnimationFrame(animate);
 }
 animate();
 
-// Hover interactivo
 document.querySelectorAll("button, a, .menu-btn").forEach(el => {
-  el.addEventListener("mouseenter", () =>
-    document.body.classList.add("cursor-hover")
-  );
-  el.addEventListener("mouseleave", () =>
-    document.body.classList.remove("cursor-hover")
-  );
+  el.addEventListener("mouseenter", () => document.body.classList.add("cursor-hover"));
+  el.addEventListener("mouseleave", () => document.body.classList.remove("cursor-hover"));
 });
 
-// Click efecto
-document.addEventListener("mousedown", () =>
-  document.body.classList.add("cursor-click")
-);
-document.addEventListener("mouseup", () =>
-  document.body.classList.remove("cursor-click")
-);
+document.addEventListener("mousedown", () => document.body.classList.add("cursor-click"));
+document.addEventListener("mouseup", () => document.body.classList.remove("cursor-click"));
 
-// Ocultar cursor en inputs / textos
-document.querySelectorAll("input, textarea").forEach(el => {
-  el.addEventListener("mouseenter", () => {
-    dot.style.display = "none";
-    ring.style.display = "none";
-    document.body.style.cursor = "text";
-  });
-
-  el.addEventListener("mouseleave", () => {
-    dot.style.display = "block";
-    ring.style.display = "block";
-    document.body.style.cursor = "none";
-  });
-});
 document.addEventListener("click", e => {
   const star = document.createElement("div");
   star.className = "star-explosion";
-  star.style.left = e.clientX + "px";
-  star.style.top = e.clientY + "px";
+  star.style.left = e.clientX + "px"; star.style.top = e.clientY + "px";
   document.body.appendChild(star);
-
   setTimeout(() => star.remove(), 600);
-});
-/* Bloquear clic direito */
-document.addEventListener('contextmenu', function(e){
-  e.preventDefault();
-});
-
-/* Bloquear seleção de texto */
-document.addEventListener('selectstart', function(e){
-  e.preventDefault();
-});
-
-/* Bloquear arrastar imagens/texto */
-document.addEventListener('dragstart', function(e){
-  e.preventDefault();
 });
 
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
-
 let w, h;
-function resize(){
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
-}
+function resize(){ w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
 window.addEventListener("resize", resize);
 resize();
 
 const stars = [];
-const STAR_COUNT = 120;
-
-for(let i=0;i<STAR_COUNT;i++){
-  stars.push({
-    x: Math.random()*w,
-    y: Math.random()*h,
-    r: Math.random()*1.5 + 0.5,
-    speed: Math.random()*0.4 + 0.2,
-    alpha: Math.random()*0.5 + 0.4
-  });
+for(let i=0;i<120;i++){
+  stars.push({ x: Math.random()*w, y: Math.random()*h, r: Math.random()*1.5 + 0.5, speed: Math.random()*0.4 + 0.2, alpha: Math.random()*0.5 + 0.4 });
 }
 
 function draw(){
   ctx.clearRect(0,0,w,h);
-
   stars.forEach(s=>{
     ctx.beginPath();
-    ctx.fillStyle = `rgba(215,190,235,${s.alpha})`; // morado pastel
+    ctx.fillStyle = `rgba(215,190,235,${s.alpha})`;
     ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
     ctx.fill();
-
     s.y += s.speed;
-    if(s.y > h){
-      s.y = -5;
-      s.x = Math.random()*w;
-    }
+    if(s.y > h){ s.y = -5; s.x = Math.random()*w; }
   });
-
   requestAnimationFrame(draw);
 }
 draw();
 </script>
-
 </body>
 </html>
