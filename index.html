@@ -176,15 +176,15 @@ body{
   z-index: 9999;
 }
 
-.reproductor.expandido { width: 200px; }
+.reproductor.expandido { width: 220px; } /* Ajustado para caber o novo botão */
 
 .song-info {
   opacity: 0;
-  width: 100px;
+  width: 90px;
   transform: translateX(-20px);
   transition: all .5s ease;
   color: #000;
-  font-size: 11px;
+  font-size: 10px;
 }
 
 .reproductor.expandido .song-info { opacity: 1; transform: translateX(0); }
@@ -192,16 +192,28 @@ body{
 .titulo { margin: 0; font-weight: 600; white-space: nowrap; overflow: hidden; }
 .cancion { margin: 0; opacity: .8; white-space: nowrap; overflow: hidden; }
 
+.controles {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .btn-control {
   background: #000;
   color: #fff;
   border: none;
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
+  width: 22px; /* Botões menores conforme pedido */
+  height: 22px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
 }
+
+.btn-control:hover { background: #333; transform: scale(1.1); }
 
 /* ===== TITULOS GLASS ===== */
 .title-glass {
@@ -307,10 +319,11 @@ html, body, * { cursor: none !important; }
               
               <div class="reproductor" id="reproductor">
                 <div class="song-info">
-                  <p class="titulo" id="artist">Carregando...</p>
+                  <p class="titulo" id="artist">...</p>
                   <p class="cancion" id="title">...</p>
                 </div>
                 <div class="controles">
+                  <button class="btn-control" id="volBtn">🔊</button>
                   <button class="btn-control" id="nextBtn">⏭</button>
                   <button class="btn-control" id="playBtn">▶</button>
                 </div>
@@ -379,7 +392,6 @@ html, body, * { cursor: none !important; }
 </div>
 
 <script>
-// PLAYLIST CORRIGIDA
 const songs = [
   { artist: "Abraham Mateo", title: "BAI LALA", src: "https://www.dropbox.com/scl/fi/gw8940zfvm60ul7malxox/Abraham-Mateo-BAI-LALA.mp3?rlkey=puytwnkxllb6tmz35htfr8tmh&st=ud55ktgf&raw=1" },
   { artist: "Alex Warren", title: "Ordinary", src: "https://www.dropbox.com/scl/fi/lpcx92wv63wzcm6z56l7q/Alex-Warren-Ordinary.mp3?rlkey=pdxjo778t66ecrja08pfyij6k&st=zb53k17t&raw=1" },          
@@ -390,8 +402,10 @@ const songs = [
 
 let current = 0;
 let isPlaying = false;
+let isMuted = false;
 const audio = document.getElementById("audio");
 const playBtn = document.getElementById("playBtn");
+const volBtn = document.getElementById("volBtn");
 const artistTxt = document.getElementById("artist");
 const titleTxt = document.getElementById("title");
 
@@ -405,7 +419,6 @@ function loadSong(index) {
   }).catch(e => console.log("Erro som:", e));
 }
 
-// INICIAR AO ENTRAR
 document.querySelector(".gold-btn").onclick = () => {
   document.getElementById("intro").style.opacity = 0;
   setTimeout(() => {
@@ -422,13 +435,19 @@ playBtn.onclick = (e) => {
   isPlaying = !isPlaying;
 };
 
+volBtn.onclick = (e) => {
+  e.stopPropagation();
+  isMuted = !isMuted;
+  audio.muted = isMuted;
+  volBtn.textContent = isMuted ? "🔇" : "🔊";
+};
+
 document.getElementById("nextBtn").onclick = (e) => {
   e.stopPropagation();
   current = (current + 1) % songs.length;
   loadSong(current);
 };
 
-// PRÓXIMA AUTOMÁTICA
 audio.onended = () => {
   current = (current + 1) % songs.length;
   loadSong(current);
@@ -438,7 +457,6 @@ const reproductor = document.getElementById("reproductor");
 reproductor.onmouseenter = () => reproductor.classList.add("expandido");
 reproductor.onmouseleave = () => reproductor.classList.remove("expandido");
 
-// TYPING
 const texto = `Sei que você sente falta daquela pessoa que você tirou do seu caminho ou que mesmo ela te tirou. Para lembrar que essa pessoa já não é quem você amou/quis algum dia. Essa pessoa mudou, talvez para melhor ou para pior, por isso a função dela nesta vida já terminou, já chegou ao fim, deixe-a ir, agradeça pelo aprendizado e por mais doloroso que seja, aceite o fim.`;
 let i = 0;
 function typingEffect() {
@@ -449,7 +467,6 @@ function typingEffect() {
 }
 typingEffect();
 
-// SECTIONS
 function showSection(id, el) {
   document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
@@ -457,7 +474,6 @@ function showSection(id, el) {
   el.classList.add("active");
 }
 
-// MODAL
 function openModal(n, d) {
   document.getElementById("modalNombre").textContent = n;
   document.getElementById("modalDesc").textContent = d;
@@ -465,7 +481,6 @@ function openModal(n, d) {
 }
 function closeModal() { document.getElementById("modal").classList.remove("active"); }
 
-// GALERIA
 const slides = document.querySelectorAll('.slide');
 let currentSlide = 0;
 function updateGallery() {
@@ -479,7 +494,6 @@ function updateGallery() {
 function next() { currentSlide = (currentSlide + 1) % slides.length; updateGallery(); }
 function prev() { currentSlide = (currentSlide - 1 + slides.length) % slides.length; updateGallery(); }
 
-// CURSOR
 const dot = document.querySelector(".cursor-dot");
 const ring = document.querySelector(".cursor-ring");
 let mX = 0, mY = 0, rX = 0, rY = 0;
@@ -501,7 +515,6 @@ document.onclick = (e) => {
   setTimeout(() => s.remove(), 600);
 };
 
-// STARS BG
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
 let w, h;
@@ -520,7 +533,6 @@ function draw() {
 }
 draw();
 
-// SEGURANÇA
 document.oncontextmenu = (e) => e.preventDefault();
 document.onselectstart = (e) => e.preventDefault();
 </script>
